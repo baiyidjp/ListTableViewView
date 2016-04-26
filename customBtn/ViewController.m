@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "oneCtrl.h"
 
 @interface ViewController ()
 
@@ -17,11 +18,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor],NSForegroundColorAttributeName,nil]];
+    [self.navigationController.navigationBar setTintColor:[UIColor blackColor]];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)click:(id)sender {
+    
+    oneCtrl *ctrl = [[oneCtrl alloc]init];
+    [self.navigationController pushViewController:ctrl animated:YES];
 }
 
 @end
