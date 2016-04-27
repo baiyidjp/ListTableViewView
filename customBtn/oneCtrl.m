@@ -26,7 +26,7 @@
 - (void)viewDidLoad{
     
     [self customTitleView];
-    self.view.backgroundColor = [UIColor redColor];
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (NSMutableArray *)dataArray{
@@ -45,10 +45,10 @@
     
     _titleBtn = [[CourseButton alloc]init];
     [_titleBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
-    [_titleBtn setTitle:@"幼儿小1班" forState:UIControlStateNormal];
-    [_titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_titleBtn setImage:[UIImage imageNamed:@"xiajiantou"] forState:UIControlStateNormal];
-    [_titleBtn setImage:[UIImage imageNamed:@"shangjiantou"] forState:UIControlStateSelected];
+    [_titleBtn setTitle:@"幼儿园1班" forState:UIControlStateNormal];
+    [_titleBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_titleBtn setImage:[UIImage imageNamed:@"tongyong_sanjiao_weizhankai@3x"] forState:UIControlStateNormal];
+    [_titleBtn setImage:[UIImage imageNamed:@"tongyong_sanjiao_zhankai@3x"] forState:UIControlStateSelected];
     [_titleBtn addTarget:self action:@selector(chooseClass:) forControlEvents:UIControlEventTouchUpInside];
     
     CGSize titleSize = [_titleBtn.titleLabel.text sizeWithAttributes:[NSMutableDictionary dictionaryWithObject:[UIFont systemFontOfSize:15] forKey:NSFontAttributeName]];

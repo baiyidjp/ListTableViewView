@@ -25,13 +25,13 @@ static CGFloat kTableView_cell_textFont = 12;//cell字号
 @implementation ListView
 
 + (instancetype)creatListViewWithTopView:(UIView *)topView dataArray:(NSArray *)dataArray selectBlock:(selectCell)selectBlock{
-
+    
     return [[self alloc]initWithTopView:topView dataArray:dataArray selectBlock:selectBlock];
 }
 
 
 - (instancetype)initWithTopView:(UIView *)topView dataArray:(NSArray *)dataArray selectBlock:(selectCell)selectBlock{
-
+    
     self = [super init];
     if (self) {
         self.topViewFrame = [topView convertRect:topView.bounds toView:nil];;
@@ -44,36 +44,62 @@ static CGFloat kTableView_cell_textFont = 12;//cell字号
 }
 
 - (void)configView{
-
-    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(self.topViewFrame.origin.x-kTableView_left_padding, CGRectGetMaxY(self.topViewFrame)+kTableView_top_padding, self.topViewFrame.size.width+kTableView_width_add, kTableView_cell_height*self.dataArray.count) style:UITableViewStylePlain];
-    tableview.backgroundColor = [UIColor whiteColor];
+    
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(self.topViewFrame.origin.x-kTableView_left_padding, CGRectGetMaxY(self.topViewFrame)+kTableView_top_padding*3, self.topViewFrame.size.width+kTableView_width_add, kTableView_cell_height*self.dataArray.count)];
+    // 加载图片
+    UIImage *image = [UIImage imageNamed:@"kuang"];
+    // 设置端盖的值
+    CGFloat top = image.size.height * 0.5;
+    //    CGFloat left = image.size.width * 0.4;
+    CGFloat bottom = image.size.height * 0.5;
+    //    CGFloat right = image.size.width * 0.4;
+    // 设置端盖的值
+    UIEdgeInsets edgeInsets = UIEdgeInsetsMake(top, 0, bottom, 0);
+    // 设置拉伸的模式
+    UIImageResizingMode mode = UIImageResizingModeStretch;
+    // 拉伸图片
+    UIImage *newImage = [image resizableImageWithCapInsets:edgeInsets resizingMode:mode];
+    imageView.image = newImage;
+    [self addSubview:imageView];
+    
+    UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectMake(self.topViewFrame.origin.x-kTableView_left_padding, CGRectGetMaxY(self.topViewFrame)+kTableView_top_padding*3, self.topViewFrame.size.width+kTableView_width_add*2, kTableView_cell_height*self.dataArray.count) style:UITableViewStylePlain];
+    tableview.backgroundColor = [UIColor clearColor];
     tableview.delegate = self;
     tableview.dataSource = self;
+    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self addSubview:tableview];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-
+    
     return self.dataArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     static NSString *cellID = @"listcell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
-    
-         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     
     cell.textLabel.text = self.dataArray[indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:kTableView_cell_textFont];
+    cell.backgroundColor = [UIColor clearColor];
+    
+    if (indexPath.row < self.dataArray.count-1) {
+        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, kTableView_cell_height-1, self.topViewFrame.size.width+kTableView_width_add, 1)];
+        lineView.backgroundColor = [UIColor whiteColor];
+        [cell.contentView addSubview:lineView];
+    }
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     if (self.selectBlock) {
         self.selectBlock(self.dataArray[indexPath.row]);
     }
@@ -85,7 +111,7 @@ static CGFloat kTableView_cell_textFont = 12;//cell字号
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-
+    
     if (self.selectBlock) {
         self.selectBlock(nil);
     }
